@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nico — Web Developer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A7C6F'/><path d='M7 24V8l9 13 9-13v16' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
@@ -612,7 +613,7 @@
     <div class="hero-ctas">
       <a href="#projects" class="btn btn-primary" data-en="View my work" data-es="Ver mis proyectos">View my work</a>
       <a href="#contact" class="btn btn-outline" data-en="Get in touch" data-es="Contactarme">Get in touch</a>
-      <a href="cv.pdf" download class="btn btn-outline" data-en="⬇ Download CV" data-es="⬇ Descargar CV">⬇ Download CV</a>
+      <a id="cv-download-btn" href="CV_NicolasSilva_EN.pdf" download class="btn btn-outline" data-en="⬇ Download CV" data-es="⬇ Descargar CV">⬇ Download CV</a>
     </div>
   </section>
   <div class="scroll-hint" data-en="Scroll" data-es="Scroll">Scroll</div>
@@ -843,6 +844,11 @@
 
   let currentLang = 'en';
 
+  const CV_FILES = {
+    en: 'CV_NicolasSilva_EN.pdf',
+    es: 'CV_NicolasSilva_ES.pdf'
+  };
+
   function setLang(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-en]').forEach(el => {
@@ -858,6 +864,11 @@
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.getElementById('btn-es').classList.toggle('active', lang === 'es');
     document.documentElement.lang = lang;
+    const cvBtn = document.getElementById('cv-download-btn');
+    if (cvBtn) {
+      cvBtn.href = CV_FILES[lang];
+      cvBtn.setAttribute('download', CV_FILES[lang]);
+    }
   }
 
   // Navbar scroll
