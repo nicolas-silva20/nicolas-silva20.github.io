@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nico — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F1;
+    --bg2: #EDEAE4;
+    --text: #1A1818;
+    --muted: #6B6560;
+    --accent: #4A7C6F;
+    --accent-light: #E3EDEB;
+    --border: #D8D4CC;
+    --white: #FFFFFF;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --radius: 12px;
+    --transition: 0.3s ease;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* NAV */
+  .nav-logo {
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    opacity: 0.75;
+    transition: opacity var(--transition);
+  }
+  .nav-logo:hover { opacity: 1; }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 5%;
+    background: rgba(247, 245, 241, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition);
+  }
+  nav.scrolled { border-color: var(--border); }
+
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .lang-toggle {
+    display: flex;
+    background: var(--bg2);
+    border-radius: 20px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .lang-btn {
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: none;
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all var(--transition);
+    letter-spacing: 0.05em;
+  }
+  .lang-btn.active {
+    background: var(--white);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 5% 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 400;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition);
+    letter-spacing: 0.03em;
+    border: 1.5px solid transparent;
+  }
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--text);
+    background: var(--bg2);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeIn 0.6s ease 1.2s forwards;
+  }
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+    animation: grow 1.5s ease 1.5s infinite;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 7rem 5%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3.5rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .stat {
+    padding: 1.5rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .projects-grid .project-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+  }
+
+  .project-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+
+  .project-thumb {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-thumb.electric { background: #FFF8E7; }
+  .project-thumb.quincho { background: #E8F4F0; }
+  .project-thumb.soon { background: var(--bg2); }
+
+  .project-body { padding: 1.5rem; }
+
+  .project-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 0.8rem;
+  }
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 400;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--accent-light);
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 1.2rem;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    transition: gap var(--transition);
+  }
+  .project-link:hover { gap: 10px; }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .skill-group {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .skill-group-title {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .skill-list li {
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .skill-list li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-decoration: none;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: color var(--transition), padding-left var(--transition);
+  }
+  .contact-link:hover {
+    color: var(--accent);
+    padding-left: 6px;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .form-group input,
+  .form-group textarea {
+    padding: 0.8rem 1rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition);
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 5%;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+
+
+  /* DIVIDER */
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes grow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2rem; padding: 1.5rem; }
+    .nav-links { display: none; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero { min-height: auto; padding: 7rem 5% 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" aria-label="Home">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26" height="26" rx="6" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M8 20V8l6 9 6-9v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about" data-en="About" data-es="Sobre mí">About</a></li>
+      <li><a href="#projects" data-en="Projects" data-es="Proyectos">Projects</a></li>
+      <li><a href="#skills" data-en="Skills" data-es="Skills">Skills</a></li>
+      <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+    </ul>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;">
+  <section class="hero" id="hero">
+    <span class="hero-tag" data-en="Web Developer · Argentina" data-es="Desarrollador Web · Argentina">Web Developer · Argentina</span>
+    <h1 class="hero-name" data-en="Hello,<br />I'm <em style='font-style:italic; color: var(--accent);'>Nico</em>." data-es="Hola,<br />soy <em style='font-style:italic; color: var(--accent);'>Nico</em>.">
+      Hello,<br />I'm <em style="font-style:italic; color: var(--accent);">Nico</em>.
+    </h1>
+    <p class="hero-sub" data-en="I build clean, responsive websites and web applications. Frontend design, Java backends, and everything in between." data-es="Construyo sitios web y aplicaciones limpias y responsivas. Diseño frontend, backends en Java, y todo lo que hay en el medio.">
+      I build clean, responsive websites and web applications. Frontend design, Java backends, and everything in between.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary" data-en="View my work" data-es="Ver mis proyectos">View my work</a>
+      <a href="#contact" class="btn btn-outline" data-en="Get in touch" data-es="Contactarme">Get in touch</a>
+      <a href="cv.pdf" download class="btn btn-outline" data-en="⬇ Download CV" data-es="⬇ Descargar CV">⬇ Download CV</a>
+    </div>
+  </section>
+  <div class="scroll-hint" data-en="Scroll" data-es="Scroll">Scroll</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label" data-en="About me" data-es="Sobre mí">About me</div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <h2 class="section-title" data-en="Turning ideas into<br/>working products." data-es="Convirtiendo ideas en<br/>productos reales.">Turning ideas into<br/>working products.</h2>
+      <p data-en="I'm a web developer based in Argentina with experience in frontend design and backend development. I enjoy working with clients to understand their needs and deliver solutions that are both functional and visually refined."
+         data-es="Soy desarrollador web radicado en Argentina con experiencia en diseño frontend y desarrollo backend. Disfruto trabajar con clientes para entender sus necesidades y entregar soluciones que sean funcionales y visualmente cuidadas.">
+        I'm a web developer based in Argentina with experience in frontend design and backend development. I enjoy working with clients to understand their needs and deliver solutions that are both functional and visually refined.
+      </p>
+      <p data-en="My stack includes HTML, CSS, JavaScript, React, and Java. I also handle EN/ES translations for technical and professional content."
+         data-es="Mi stack incluye HTML, CSS, JavaScript, React y Java. También realizo traducciones EN/ES de contenido técnico y profesional.">
+        My stack includes HTML, CSS, JavaScript, React, and Java. I also handle EN/ES translations for technical and professional content.
+      </p>
+    </div>
+    <div class="reveal" style="animation-delay: 0.15s;">
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">Full</div>
+          <div class="stat-label" data-en="Stack developer" data-es="Stack developer">Stack developer</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">B2+</div>
+          <div class="stat-label" data-en="English level" data-es="Nivel de inglés">English level</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">AR</div>
+          <div class="stat-label" data-en="Based in Argentina" data-es="Basado en Argentina">Based in Argentina</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label" data-en="Curiosity" data-es="Curiosidad">Curiosity</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal" data-en="Selected work" data-es="Trabajos seleccionados">Selected work</div>
+  <div class="projects-grid">
+
+    <a href="https://github.com/matiasman1/PizzaMia-Frontend-Cliente" target="_blank" class="project-card reveal">
+      <div class="project-thumb" style="background:#FFF0F0;">🍕</div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Vite</span>
+          <span class="tag">Contributor</span>
+        </div>
+        <div class="project-title" data-en="Pizza Mia — E-commerce" data-es="Pizza Mia — E-commerce">Pizza Mia — E-commerce</div>
+        <p class="project-desc" data-en="Full e-commerce frontend for a pizzeria: landing page, client portal with cart, order history, address management, and MercadoPago integration." data-es="Frontend completo de e-commerce para una pizzería: landing page, portal de cliente con carrito, historial de pedidos, gestión de direcciones e integración con MercadoPago.">Full e-commerce frontend for a pizzeria: landing page, client portal with cart, order history, address management, and MercadoPago integration.</p>
+        <span class="project-link" data-en="View on GitHub →" data-es="Ver en GitHub →">View on GitHub →</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/nicolas-silva20/quincho-reservas-frontend" target="_blank" class="project-card reveal">
+      <div class="project-thumb quincho">🏡</div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Java</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">MySQL</span>
+        </div>
+        <div class="project-title" data-en="Quincho Booking System" data-es="Sistema de Reservas Quincho">Quincho Booking System</div>
+        <p class="project-desc" data-en="Full-stack booking platform for a private event space. React frontend connected to a Java/Spring Boot REST API with MySQL persistence." data-es="Plataforma de reservas full stack para un espacio de eventos privado. Frontend en React conectado a una API REST Java/Spring Boot con persistencia en MySQL.">Full-stack booking platform for a private event space. React frontend connected to a Java/Spring Boot REST API with MySQL persistence.</p>
+        <span class="project-link" data-en="View on GitHub →" data-es="Ver en GitHub →">View on GitHub →</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/nicolas-silva20/DTO-Puntos-de-Recoleccion" target="_blank" class="project-card reveal">
+      <div class="project-thumb" style="background:#E8F5E9;">♻️</div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">Java 17</span>
+          <span class="tag">Spring Boot</span>
+          <span class="tag">JPA</span>
+          <span class="tag">REST API</span>
+        </div>
+        <div class="project-title" data-en="Waste Collection API" data-es="API Puntos de Recolección">Waste Collection API</div>
+        <p class="project-desc" data-en="RESTful API for managing recycling collection points. Layered architecture with DTOs, service layer, JPA repositories, and a full Postman collection included." data-es="API REST para gestionar puntos de recolección de reciclables. Arquitectura en capas con DTOs, capa de servicio, repositorios JPA y colección Postman incluida.">RESTful API for managing recycling collection points. Layered architecture with DTOs, service layer, JPA repositories, and a full Postman collection included.</p>
+        <span class="project-link" data-en="View on GitHub →" data-es="Ver en GitHub →">View on GitHub →</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/nicolas-silva20/TP-Zustand" target="_blank" class="project-card reveal">
+      <div class="project-thumb" style="background:#EDE7F6;">✅</div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Zustand</span>
+          <span class="tag">Vite</span>
+        </div>
+        <div class="project-title" data-en="Task Manager" data-es="Gestor de Tareas">Task Manager</div>
+        <p class="project-desc" data-en="Task management app built with React, TypeScript and Zustand for state management. Features full CRUD, form validation, and a mock REST API via JSON Server." data-es="Aplicación de gestión de tareas con React, TypeScript y Zustand para el manejo de estado. CRUD completo, validación de formularios y API mock con JSON Server.">Task management app built with React, TypeScript and Zustand for state management. Features full CRUD, form validation, and a mock REST API via JSON Server.</p>
+        <span class="project-link" data-en="View on GitHub →" data-es="Ver en GitHub →">View on GitHub →</span>
+      </div>
+    </a>
+
+    <a href="https://github.com/nicolas-silva20/jselectricista-public" target="_blank" class="project-card reveal">
+      <div class="project-thumb electric">⚡</div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JS</span>
+          <span class="tag">Formspree</span>
+        </div>
+        <div class="project-title" data-en="Electrician Landing Page" data-es="Landing Page Electricista">Electrician Landing Page</div>
+        <p class="project-desc" data-en="Real client project: landing page for an electrical and solar energy business in Mendoza. WhatsApp button, Instagram link, and Formspree contact form." data-es="Proyecto real para cliente: landing page para un negocio de electricidad y energía solar en Mendoza. Botón de WhatsApp, Instagram y formulario de contacto con Formspree.">Real client project: landing page for an electrical and solar energy business in Mendoza. WhatsApp button, Instagram link, and Formspree contact form.</p>
+        <span class="project-link" data-en="View on GitHub →" data-es="Ver en GitHub →">View on GitHub →</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal" data-en="Technologies" data-es="Tecnologías">Technologies</div>
+  <div class="skills-grid reveal">
+    <div class="skill-group">
+      <div class="skill-group-title">Frontend</div>
+      <ul class="skill-list">
+        <li>HTML5 &amp; CSS3</li>
+        <li>JavaScript (ES6+)</li>
+        <li>React.js</li>
+        <li>Responsive Design</li>
+        <li>TypeScript</li>
+        <li>CSS Animations</li>
+      </ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Backend</div>
+      <ul class="skill-list">
+        <li>Java</li>
+        <li>Spring Boot</li>
+        <li>Spring JPA</li>
+        <li>REST APIs</li>
+        <li>MySQL</li>
+        <li>Zustand</li>
+      </ul>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title" data-en="Tools & Other" data-es="Herramientas y más">Tools & Other</div>
+      <ul class="skill-list">
+        <li>Git &amp; GitHub</li>
+        <li>VS Code / Cursor</li>
+        <li>Formspree</li>
+        <li data-en="EN/ES Translation" data-es="Traducción EN/ES">EN/ES Translation</li>
+        <li data-en="Domain management" data-es="Gestión de dominios">Domain management</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label reveal" data-en="Let's work together" data-es="Trabajemos juntos">Let's work together</div>
+  <div class="contact-inner reveal">
+    <div class="contact-info">
+      <h2 class="section-title" data-en="Have a project<br/>in mind?" data-es="¿Tenés un proyecto<br/>en mente?">Have a project<br/>in mind?</h2>
+      <p data-en="I'm available for freelance projects. Whether it's a landing page, a web application, or a translation — let's talk." data-es="Estoy disponible para proyectos freelance. Ya sea una landing page, una aplicación web o una traducción — hablemos.">I'm available for freelance projects. Whether it's a landing page, a web application, or a translation — let's talk.</p>
+      <div class="contact-links">
+
+        <a href="mailto:nicolassilva1108@gmail.com" class="contact-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          nicolassilva1108@gmail.com
+        </a>
+        <a href="https://github.com/nicolas-silva20" target="_blank" class="contact-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          github.com/nicolas-silva20
+        </a>
+      </div>
+    </div>
+
+    <form class="contact-form" action="https://formspree.io/f/TU_ID" method="POST">
+      <div class="form-group">
+        <label data-en="Your name" data-es="Tu nombre">Your name</label>
+        <input type="text" name="name" required />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label data-en="Message" data-es="Mensaje">Message</label>
+        <textarea name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="align-self: flex-start;" data-en="Send message" data-es="Enviar mensaje">Send message</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span data-en="Built with HTML, CSS & JS · Nicolás Silva" data-es="Hecho con HTML, CSS y JS · Nicolás Silva">Built with HTML, CSS &amp; JS · Nicolás Silva</span>
+</footer>
+
+
+
+<script>
+  const translations = {
+    en: {
+      'About': 'About', 'Projects': 'Projects', 'Skills': 'Skills', 'Contact': 'Contact',
+    },
+    es: {
+      'About': 'Sobre mí', 'Projects': 'Proyectos', 'Skills': 'Skills', 'Contact': 'Contacto',
+    }
+  };
+
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + lang);
+      if (text) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = text;
+        } else {
+          el.innerHTML = text;
+        }
+      }
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.documentElement.lang = lang;
+  }
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
