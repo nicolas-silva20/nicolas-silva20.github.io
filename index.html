@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Nico — Web Developer</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A7C6F'/><path d='M7 24V8l9 13 9-13v16' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234A7C6F'/><path d='M7 24V8l18 16V8' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
@@ -564,6 +564,40 @@
     transform: translateY(0);
   }
 
+
+  /* DARK MODE */
+  body.dark {
+    --bg: #1C1A18;
+    --bg2: #252220;
+    --text: #F0EDE8;
+    --muted: #9A9490;
+    --accent: #6BA898;
+    --accent-light: #1E3330;
+    --border: #38342F;
+    --white: #252220;
+  }
+
+  .dark-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+  .dark-toggle:hover {
+    color: var(--text);
+    border-color: var(--text);
+    background: var(--bg2);
+  }
+  .dark-toggle svg { width: 16px; height: 16px; pointer-events: none; }
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -583,7 +617,7 @@
   <a href="#" class="nav-logo" aria-label="Home">
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="1" y="1" width="26" height="26" rx="6" stroke="currentColor" stroke-width="1.2"/>
-      <path d="M8 20V8l6 9 6-9v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 20V8l12 12V8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </a>
   <div class="nav-right">
@@ -597,6 +631,14 @@
       <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
     </div>
+    <button class="dark-toggle" id="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode">
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+      </svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
   </div>
 </nav>
 
@@ -880,6 +922,20 @@
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 20);
   });
+
+  // Dark mode
+  function toggleDark() {
+    const isDark = document.body.classList.toggle('dark');
+    document.getElementById('icon-moon').style.display = isDark ? 'none' : 'block';
+    document.getElementById('icon-sun').style.display = isDark ? 'block' : 'none';
+    localStorage.setItem('dark', isDark ? '1' : '0');
+  }
+  // Restore preference
+  if (localStorage.getItem('dark') === '1') {
+    document.body.classList.add('dark');
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display = 'block';
+  }
 
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
